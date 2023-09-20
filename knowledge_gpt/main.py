@@ -21,8 +21,8 @@ def clear_submit():
     st.session_state["submit"] = False
 
 
-st.set_page_config(page_title="DocGPT", page_icon="📖", layout="wide")
-st.header("📖DocGPT")
+st.set_page_config(page_title="QuranGPT", page_icon="📖", layout="wide")
+st.header("📖QuranGPT")
 
 
 hide_default_format = """
@@ -36,9 +36,9 @@ st.markdown(hide_default_format, unsafe_allow_html=True)
 sidebar()
 
 uploaded_file = st.file_uploader(
-    "Upload a pdf, docx, or txt file 上传文件",
+    "Upload a pdf, docx, or txt file ",
     type=["pdf", "docx", "txt"],
-    help="Scanned documents are not supported yet! 扫描的文件不支持",
+    help="Scanned documents are not supported yet! ",
     on_change=clear_submit,
 )
 
@@ -61,7 +61,7 @@ if uploaded_file is not None:
     except OpenAIError as e:
         st.error(e._message)
 
-query = st.text_area("Ask a question about the document 对文件提问题", on_change=clear_submit)
+query = st.text_area("Ask a question about the document ", on_change=clear_submit)
 with st.expander("Advanced Options"):
     show_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
     show_full_doc = st.checkbox("Show parsed contents of the document")
@@ -71,10 +71,10 @@ if show_full_doc and doc:
         # Hack to get around st.markdown rendering LaTeX
         st.markdown(f"<p>{wrap_text_in_html(doc)}</p>", unsafe_allow_html=True)
 
-button = st.button("Submit 提交")
+button = st.button("Submit ")
 if button or st.session_state.get("submit"):
     if not st.session_state.get("api_key_configured"):
-        st.error("Please configure your OpenAI API key!")
+        st.error("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")
     elif not index:
         st.error("Please upload a document!")
     elif not query:
@@ -104,31 +104,5 @@ if button or st.session_state.get("submit"):
 
         except OpenAIError as e:
             st.error(e._message)
-
-
-# Load the images
-image1 = Image.open("knowledge_gpt/wechatqrcode_kyle.jpg")
-image2 = Image.open("knowledge_gpt/zhifubaoqrcode_kyle.jpg")
-image3 = Image.open("knowledge_gpt/paypalqrcode.png")
-
-# Display the image with text on top
-st.write("Each document costs about $1 for OpenAI API call. Please consider pay to keep this service alive! Thank you!")
-st.write("每篇文章调用OpenAI API的费用约为¥7人民币，请帮助支付以便我能够一直提供这个AI小程序，谢谢您！")
-#st.image(img, caption=None, width=200)
-
-# Divide the app page into two columns
-col1, col2, col3 = st.columns(3)
-
-# Display the first image in the first column
-with col1:
-    st.image(image1, caption="WeChat Pay", width=200)
-
-# Display the second image in the second column
-with col2:
-    st.image(image2, caption="支付宝", width=200)
-
-# Display the third image in the third column
-with col3:
-    st.image(image3, caption="PayPal", width=200)
 
 
